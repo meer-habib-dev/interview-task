@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "659835497018",
+    "project_id": "interview-project-6d524",
+    "storage_bucket": "interview-project-6d524.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:659835497018:android:890b322ea39caf958f2303",
+        "android_client_info": {
+          "package_name": "com.meerhabib.interviewtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "659835497018-lsrpqqc1svaps1rq2dufvtgg15lfj6m6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZkdqMpIL7PQwKTcxd2fHf2O42kZvDRZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "659835497018-lsrpqqc1svaps1rq2dufvtgg15lfj6m6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "659835497018-cneqs0bne6ua5u5jnk45eghbmfn3ata9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.meerhabib.interviewtest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
