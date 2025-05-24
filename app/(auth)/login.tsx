@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -40,7 +40,7 @@ export default function LoginScreen() {
 
     try {
       const user = await login(email, password);
-      console.log('user', user);
+
       if (user) {
         setUser(user);
         router.replace('/(tabs)');

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { Text, StyleSheet, Animated } from 'react-native';
 import { COLORS } from '@/constants/theme';
 import { toZonedTime } from 'date-fns-tz';
 import { getHours } from 'date-fns';

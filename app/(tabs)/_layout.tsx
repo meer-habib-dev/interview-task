@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import { Tabs } from 'expo-router';
-import { Home, User, Settings } from 'lucide-react-native';
+import { Home, User } from 'lucide-react-native';
 import { COLORS } from '@/constants/theme';
 import { useAuthStore } from '@/store/authStore';
 import { Redirect } from 'expo-router';
@@ -31,7 +31,8 @@ export default function TabLayout() {
           fontSize: 12,
         },
         headerShown: false,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -44,13 +45,6 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color, size }) => <Settings color={color} size={size} />,
         }}
       />
     </Tabs>

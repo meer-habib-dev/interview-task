@@ -32,12 +32,6 @@ export const useAuthStore = create<AuthState>()(
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.setInitialized(true);
-          console.log(
-            'Auth state rehydrated:',
-            state.isAuthenticated
-              ? 'User is authenticated'
-              : 'User is not authenticated'
-          );
         }
       },
     }

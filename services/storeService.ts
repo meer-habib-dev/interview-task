@@ -23,7 +23,6 @@ export const getStoreHours = async (): Promise<StoreHours[]> => {
     const response = await apiClient.get('/store-times');
     return response.data;
   } catch (error) {
-    console.error('Error fetching store hours:', error);
     throw error;
   }
 };
@@ -36,7 +35,6 @@ export const getStoreOverrides = async (): Promise<StoreOverride[]> => {
     const response = await apiClient.get('/store-overrides');
     return response.data;
   } catch (error) {
-    console.error('Error fetching store overrides:', error);
     throw error;
   }
 };

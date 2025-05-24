@@ -1,15 +1,8 @@
-import {
-  isWithinInterval,
-  getDay,
-  parse,
-  addMinutes,
-  startOfDay,
-  endOfDay,
-  format,
-} from 'date-fns';
+import { getDay, addMinutes, startOfDay } from 'date-fns';
 import { toZonedTime, fromZonedTime } from 'date-fns-tz';
 import { StoreHours, StoreOverride } from '@/types/store';
 import { timeStringToDate } from './dateTimeUtils';
+import { useTimezoneStore } from '@/store/timezoneStore';
 
 /**
  * Check if the store is open at the current time
@@ -44,15 +37,7 @@ export const getIsStoreOpen = (
   const todayHours = storeHours.filter(
     (hours) => hours.day_of_week === dayOfWeek && hours.is_open
   );
-  console.log(
-    'todayHours',
-    todayHours,
-    isWithinStoreHours(
-      now,
-      todayHours[0]?.start_time || '',
-      todayHours[0]?.end_time || ''
-    )
-  );
+
   // Check if within any of the opening slots
   return todayHours.some((hours) =>
     isWithinStoreHours(now, hours.start_time, hours.end_time)
@@ -105,6 +90,9 @@ export const getNextOpeningTime = (
   const currentMonth = now.getMonth() + 1; // 0-based to 1-based
   const currentDay = now.getDate();
 
+  const isNycTimezone = useTimezoneStore.getState().isNycTimezone;
+  const userTimezone = useTimezoneStore.getState().userTimezone;
+
   // Check if there's an override for today
   const todayOverride = storeOverrides.find(
     (override) => override.month === currentMonth && override.day === currentDay
@@ -118,7 +106,7 @@ export const getNextOpeningTime = (
       now,
       openHour.toString(),
       openMinute.toString(),
-      'America/New_York'
+      isNycTimezone ? 'America/New_York' : userTimezone
     );
 
     if (openingTime > now) {

@@ -21,9 +21,7 @@ export const initializeNotifications = async (): Promise<void> => {
 
   // Register for notification events
   const subscription = Notifications.addNotificationReceivedListener(
-    (notification) => {
-      console.log('Notification received:', notification);
-    }
+    (notification) => {}
   );
 
   return Promise.resolve();
@@ -34,7 +32,6 @@ export const initializeNotifications = async (): Promise<void> => {
  */
 export const requestNotificationPermissions = async (): Promise<boolean> => {
   if (Platform.OS === 'web') {
-    console.log('Notifications not supported on web');
     return false;
   }
 
@@ -59,7 +56,6 @@ export const scheduleOpeningNotification = async (
   storeOverrides: StoreOverride[]
 ): Promise<void> => {
   if (Platform.OS === 'web') {
-    console.log('Notifications not supported on web');
     return;
   }
 
@@ -67,14 +63,12 @@ export const scheduleOpeningNotification = async (
     useNotificationStore.getState();
 
   if (!notificationsEnabled) {
-    console.log('Notifications not enabled by user');
     return;
   }
 
   // Request permissions if not already granted
   const hasPermission = await requestNotificationPermissions();
   if (!hasPermission) {
-    console.log('Notification permissions not granted');
     return;
   }
 
@@ -82,9 +76,8 @@ export const scheduleOpeningNotification = async (
   if (nextNotificationId) {
     try {
       await Notifications.cancelScheduledNotificationAsync(nextNotificationId);
-      console.log('Cancelled previous notification:', nextNotificationId);
     } catch (error) {
-      console.error('Error cancelling previous notification:', error);
+      console.log('Error cancelling previous notification:', error);
     }
   }
 
@@ -92,7 +85,6 @@ export const scheduleOpeningNotification = async (
   const nextOpeningTime = getNextOpeningTime(storeHours, storeOverrides);
 
   if (!nextOpeningTime) {
-    console.log('No opening times found');
     return;
   }
 
@@ -101,15 +93,11 @@ export const scheduleOpeningNotification = async (
   notificationTime.setHours(notificationTime.getHours() - 1);
 
   if (notificationTime <= new Date()) {
-    console.log('Notification time has already passed:', notificationTime);
     return;
   }
 
   // Calculate time until notification in seconds
   const seconds = Math.floor((notificationTime.getTime() - Date.now()) / 1000);
-  console.log(
-    `Scheduling notification for ${notificationTime.toLocaleString()}, ${seconds} seconds from now`
-  );
 
   try {
     // Schedule the notification
@@ -124,15 +112,14 @@ export const scheduleOpeningNotification = async (
         priority: Notifications.AndroidNotificationPriority.HIGH,
       },
       trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds,
       },
     });
 
-    console.log('Notification scheduled with ID:', notificationId);
-
     // Save the notification ID
     setNextNotificationId(notificationId);
   } catch (error) {
-    console.error('Error scheduling notification:', error);
+    throw error;
   }
 };

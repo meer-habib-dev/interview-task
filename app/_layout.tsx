@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-// import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { SplashScreen } from 'expo-router';
 import { useFonts } from 'expo-font';
 import {
@@ -14,7 +13,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initializeStorage } from '@/storage/mmkvStorage';
 import { initializeNotifications } from '@/utils/notificationUtils';
 import { useAuthStore } from '@/store/authStore';
-import { useFirebaseAuth } from '@/hooks/useFirebaseAuth';
+
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 // Prevent splash screen from auto-hiding
@@ -32,9 +31,7 @@ GoogleSignin.configure({
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
-  // useFrameworkReady();
-  const { initialized, setInitialized } = useAuthStore();
-  const { loading: authLoading } = useFirebaseAuth();
+  const { initialized } = useAuthStore();
   const [appReady, setAppReady] = useState(false);
 
   const [fontsLoaded, fontError] = useFonts({
@@ -60,12 +57,6 @@ export default function RootLayout() {
     prepare();
   }, []);
 
-  // Mark auth as initialized once Firebase auth state is loaded
-  useEffect(() => {
-    if (!authLoading) {
-      setInitialized(true);
-    }
-  }, [authLoading, setInitialized]);
 
   // Hide splash screen once fonts are loaded and app is initialized
   useEffect(() => {
@@ -84,6 +75,15 @@ export default function RootLayout() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="date-time-picker"
+          options={{
+            presentation: 'modal',
+            headerShown: false,
+            gestureEnabled: true,
+            animationTypeForReplace: 'push',
+          }}
+        />
       </Stack>
       <StatusBar style="dark" />
     </QueryClientProvider>

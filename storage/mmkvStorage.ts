@@ -7,7 +7,6 @@ export const storage = new MMKV();
 export const initializeStorage = async (): Promise<void> => {
   // Nothing special needed for initialization, but keeping this
   // function for potential future setup needs
-  console.log('MMKV storage initialized');
   return Promise.resolve();
 };
 
@@ -15,15 +14,13 @@ export const initializeStorage = async (): Promise<void> => {
 export const MMKVStorage = {
   getItem: (name: string): string | null => {
     const value = storage.getString(name);
-    console.log(`[MMKV] Getting item ${name}:`, value ? 'found' : 'not found');
+
     return value ?? null;
   },
   setItem: (name: string, value: string): void => {
-    console.log(`[MMKV] Setting item ${name}`);
     storage.set(name, value);
   },
   removeItem: (name: string): void => {
-    console.log(`[MMKV] Removing item ${name}`);
     storage.delete(name);
   },
 };
