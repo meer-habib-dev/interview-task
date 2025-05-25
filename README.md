@@ -4,7 +4,7 @@ A React Native Expo application for scheduling appointments with features like G
 
 ## 📱 App Demo
 
-![App Demo](./assets/images/demo.gif)
+<img src="./assets/images/demo.gif" alt="App Demo" width="390">
 
 *Demo showing the main features of the PerDiem Scheduling App*
 
