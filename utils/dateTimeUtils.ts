@@ -94,7 +94,11 @@ export const getTimezone = (): string => {
 
 export const getCurrentTimeInTimezone = (): Date => {
   const nyTimeZone = getTimezone();
-  // const now = new Date('2025-05-27T02:00:00Z');
-  const now = new Date();
+  const now = new Date('2025-05-27T03:00:00Z');
+  // const now = new Date();
+  console.log(
+    'toZonedTime(now, nyTimeZone);',
+    toZonedTime(now, nyTimeZone).toLocaleString()
+  );
   return toZonedTime(now, nyTimeZone);
 };

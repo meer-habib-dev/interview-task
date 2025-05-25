@@ -2,124 +2,192 @@
 
 A React Native Expo application for scheduling appointments with features like Google Authentication, push notifications, and timezone management.
 
-## Features
+## 📱 App Demo
+
+![App Demo](./assets/images/demo.gif)
+
+*Demo showing the main features of the PerDiem Scheduling App*
+
+## 🎥 Video Demo
+
+Watch the full app demonstration: [Video Demo](https://drive.google.com/file/d/1c8paacR9CsR24QaJoolw6Rp_4IXOfPWk/view?usp=sharing)
+
+## ✨ Features
 
 - **Authentication**
   - Email/Password login
-  - Google Authentication
+  - Google Authentication with Firebase
   - Persistent login state
-
 - **Store Hours Management**
   - View store status (open/closed)
   - Date selection with dynamic time slots
   - Override handling for special dates
-
 - **Timezone Toggle**
   - Switch between NYC timezone and local timezone
   - Dynamic greeting messages based on time of day
   - Location detection for city name
-
 - **State Management**
   - Zustand for global state management
   - MMKV for persistent storage
   - React Query for API data fetching
-
 - **Notifications**
   - Push notifications for store opening times
   - Permission handling
 
-## Setup and Run Instructions
+## 🚀 Setup and Run Instructions
 
 ### Prerequisites
 
-- Node.js (v14 or newer)
-- Yarn or npm
-- Expo CLI (`npm install -g expo-cli`)
+- Node.js (v16 or newer)
+- npm or yarn
+- Expo CLI: `npm install -g @expo/cli`
+- iOS Simulator (for iOS development)
+- Android Studio/Emulator (for Android development)
 
-### Installation
+### Quick Start
 
-1. Clone the repository
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/meer-habib-dev/interview-task.git
+   cd interview-task
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Run on your preferred platform**
+   - **iOS**: Press `i` in the terminal or scan QR code with Expo Go
+   - **Android**: Press `a` in the terminal or scan QR code with Expo Go
+   - **Web**: Press `w` in the terminal
+
+### Firebase Setup (Required for Authentication)
+
+The app uses Firebase for Google Authentication. Firebase configuration files are already included:
+
+- `GoogleService-Info.plist` (iOS)
+- `google-services.json` (Android)
+
+For production deployment, you'll need to:
+1. Create your own Firebase project
+2. Replace the configuration files with your own
+3. Update the bundle identifiers in `app.json`
+
+### Building for Production
+
+For iOS/Android builds:
+```bash
+# Generate native code
+npx expo prebuild
+
+# Build for iOS
+npx expo run:ios
+
+# Build for Android
+npx expo run:android
 ```
-git clone https://github.com/your-username/perdiem-scheduler.git
-cd perdiem-scheduler
-```
 
-2. Install dependencies
-```
-npm install
-```
+## 📋 Available Scripts
 
-3. Start the development server
-```
-npm run dev
-```
+- `npm run dev` - Start development server
+- `npm run android` - Run on Android
+- `npm run ios` - Run on iOS
+- `npm run build:web` - Build for web
+- `npm run lint` - Run linter
 
-4. Open the app
-   - iOS: Press `i` in the terminal or open the iOS simulator
-   - Android: Press `a` in the terminal or open the Android emulator
-   - Web: Press `w` in the terminal or open http://localhost:19006
-
-### Environment Variables
-
-Create a `.env` file in the root directory with:
+## 🏗️ Architecture
 
 ```
-EXPO_PUBLIC_API_URL=https://coding-challenge-pd-1a25b1a14f34.herokuapp.com
-EXPO_PUBLIC_FIREBASE_API_KEY=your-firebase-api-key
-EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
-EXPO_PUBLIC_FIREBASE_PROJECT_ID=your-firebase-project-id
-EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
-EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
-EXPO_PUBLIC_FIREBASE_APP_ID=your-firebase-app-id
+├── app/                    # Expo Router pages
+│   ├── (auth)/            # Authentication screens
+│   ├── (tabs)/            # Main tab navigation
+│   └── _layout.tsx        # Root layout
+├── components/            # Reusable UI components
+├── screens/               # Screen components
+├── services/              # API services
+├── store/                 # Zustand state management
+├── utils/                 # Helper functions
+├── types/                 # TypeScript definitions
+└── constants/             # App constants
 ```
 
-### Firebase Setup for React Native
+## 🔧 API Integration
 
-This project uses @react-native-firebase/app and @react-native-firebase/auth for authentication.
+The app integrates with a mock API:
 
-#### iOS Setup
-1. Create a Firebase project and register your iOS app in the Firebase console
-2. Download the `GoogleService-Info.plist` file and place it in the root directory of your project
-3. Run `npx expo prebuild` to generate the native iOS project
-4. Build and run on iOS with `npx expo run:ios`
+- **Base URL**: `https://coding-challenge-pd-1a25b1a14f34.herokuapp.com`
+- **Authentication**: Basic Auth (username: `perdiem`, password: `perdiem`)
+- **Endpoints**:
+  - `/store-times` - Regular store hours by day
+  - `/store-overrides` - Special dates with custom hours
 
-#### Android Setup
-1. Create a Firebase project and register your Android app in the Firebase console
-2. Download the `google-services.json` file and place it in the root directory of your project
-3. Run `npx expo prebuild` to generate the native Android project
-4. Build and run on Android with `npx expo run:android`
+## 🔒 Assumptions & Limitations
 
-## API Integration
+### Assumptions
+- Users have stable internet connection for API calls
+- Firebase project is properly configured for authentication
+- Store operates in NYC timezone as primary reference
+- Users want notifications for store opening times
 
-The app integrates with a mock API for store hours and overrides:
-- Base URL: https://coding-challenge-pd-1a25b1a14f34.herokuapp.com
-- Authentication: Basic Authentication (username: perdiem, password: perdiem)
-- Endpoints:
-  - `/store-times` - Regular store opening and closing hours by day of week
-  - `/store-overrides` - Special opening/closing times for specific dates
-  - `/auth` - Authentication endpoint for email/password login
+### Limitations
+- **Web Platform**: 
+  - Push notifications not supported in browsers
+  - Location services have limited functionality
+  - Google Sign-In requires additional web configuration
+- **Authentication**: 
+  - Requires proper Firebase setup for production use
+  - Google Sign-In needs Google Cloud Console configuration
+- **Notifications**: 
+  - Limited to foreground notifications on some platforms
+  - Requires user permission
+- **Timezone**: 
+  - Location detection may not work in all environments
+  - Fallback to device timezone when location unavailable
 
-## Architecture
+## 📝 Notes on Approach
 
-The app follows a modular architecture with:
+### Technical Decisions
 
-- **Screens**: Main UI screens (Login, Home, Profile, Settings)
-- **Components**: Reusable UI components
-- **Services**: API and auth services
-- **Store**: Zustand state management
-- **Utils**: Helper functions for dates, notifications, etc.
-- **Types**: TypeScript type definitions
+1. **Expo Router**: Chosen for file-based routing and better developer experience
+2. **Zustand**: Lightweight state management, easier than Redux for this scope
+3. **React Query**: Efficient API data fetching with caching and background updates
+4. **MMKV**: High-performance storage for persistent data
+5. **Firebase Auth**: Reliable authentication with Google Sign-In support
 
-## Limitations
+### User Experience Focus
 
-- Push notifications are not supported in web browsers
-- Location services have limited functionality on web
-- Google Authentication requires proper setup in the Google Cloud Console
+- **Responsive Design**: Works well on various device sizes
+- **Smooth Animations**: Using React Native Reanimated for fluid interactions
+- **Clear Feedback**: Loading states, error handling, and success messages
+- **Accessibility**: Proper color contrast and touch targets
+- **Offline Handling**: Cached data with React Query for better offline experience
 
-## Notes on Approach
+### Code Organization
 
-- Used React Query for efficient API data fetching and caching
-- Implemented persistent storage with MMKV for better performance
-- Created a responsive UI that works well on various device sizes
-- Used Zustand for simple but powerful state management
-- Focused on user experience with smooth animations and clear feedback
+- **Modular Architecture**: Clear separation of concerns
+- **TypeScript**: Full type safety throughout the application
+- **Consistent Styling**: Centralized theme and color constants
+- **Error Boundaries**: Graceful error handling and recovery
+- **Performance**: Optimized re-renders and efficient data fetching
+
+### Development Workflow
+
+- **Hot Reload**: Fast development iteration with Expo
+- **Cross-Platform**: Single codebase for iOS, Android, and Web
+- **Debugging**: Integrated debugging tools and error reporting
+- **Testing Ready**: Structure supports easy addition of tests
+
+## 🔗 Links
+
+- **Repository**: [GitHub](https://github.com/meer-habib-dev/interview-task)
+- **Video Demo**: [Google Drive](https://drive.google.com/file/d/1c8paacR9CsR24QaJoolw6Rp_4IXOfPWk/view?usp=sharing)
+
+## 📄 License
+
+This project is private and intended for interview purposes.
