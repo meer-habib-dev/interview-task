@@ -38,7 +38,7 @@ Watch the full app demonstration: [Video Demo](https://drive.google.com/file/d/1
 
 ### Prerequisites
 
-- Node.js (v16 or newer)
+- Node.js (v18.20.2)
 - npm or yarn
 - Expo CLI: `npm install -g @expo/cli`
 - iOS Simulator (for iOS development)
@@ -126,16 +126,6 @@ The app integrates with a mock API:
 - **Endpoints**:
   - `/store-times` - Regular store hours by day
   - `/store-overrides` - Special dates with custom hours
-
-## 🔒 Assumptions & Limitations
-
-### Assumptions
-- Users have stable internet connection for API calls
-- Firebase project is properly configured for authentication
-- Store operates in NYC timezone as primary reference
-- Users want notifications for store opening times
-
-### Limitations
 - **Web Platform**: 
   - Push notifications not supported in browsers
   - Location services have limited functionality
@@ -160,14 +150,6 @@ The app integrates with a mock API:
 4. **MMKV**: High-performance storage for persistent data
 5. **Firebase Auth**: Reliable authentication with Google Sign-In support
 
-### User Experience Focus
-
-- **Responsive Design**: Works well on various device sizes
-- **Smooth Animations**: Using React Native Reanimated for fluid interactions
-- **Clear Feedback**: Loading states, error handling, and success messages
-- **Accessibility**: Proper color contrast and touch targets
-- **Offline Handling**: Cached data with React Query for better offline experience
-
 ### Code Organization
 
 - **Modular Architecture**: Clear separation of concerns
@@ -176,18 +158,8 @@ The app integrates with a mock API:
 - **Error Boundaries**: Graceful error handling and recovery
 - **Performance**: Optimized re-renders and efficient data fetching
 
-### Development Workflow
-
-- **Hot Reload**: Fast development iteration with Expo
-- **Cross-Platform**: Single codebase for iOS, Android, and Web
-- **Debugging**: Integrated debugging tools and error reporting
-- **Testing Ready**: Structure supports easy addition of tests
 
 ## 🔗 Links
 
 - **Repository**: [GitHub](https://github.com/meer-habib-dev/interview-task)
 - **Video Demo**: [Google Drive](https://drive.google.com/file/d/1c8paacR9CsR24QaJoolw6Rp_4IXOfPWk/view?usp=sharing)
-
-## 📄 License
-
-This project is private and intended for interview purposes.
