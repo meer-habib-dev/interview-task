@@ -72,9 +72,8 @@ export default function HomeScreen() {
 
   // Check if the store is open - use timezone-aware current time
   const currentTime = useMemo(() => {
-    const activeTimezone = isNycTimezone ? 'America/New_York' : userTimezone;
-    return getCurrentTimeInTimezone(activeTimezone);
-  }, [isNycTimezone, userTimezone]);
+    return getCurrentTimeInTimezone();
+  }, []);
 
   const isStoreOpen = getIsStoreOpen(storeHours, storeOverrides, currentTime);
 
@@ -193,7 +192,7 @@ export default function HomeScreen() {
           <StoreStatusIndicator isOpen={isStoreOpen} />
         </View>
 
-        {selectedDate && selectedTimeSlot && (
+        {selectedDate && selectedTimeSlot ? (
           <View style={styles.selectedAppointmentSection}>
             <Text style={styles.sectionTitle}>Your Appointment</Text>
             <View style={styles.appointmentCard}>
@@ -223,8 +222,33 @@ export default function HomeScreen() {
               </TouchableOpacity>
             </View>
           </View>
+        ) : (
+          <View style={styles.emptyStateSection}>
+            <Text style={styles.sectionTitle}>Your Appointments</Text>
+            <View style={styles.emptyStateCard}>
+              <View style={styles.emptyStateIconContainer}>
+                <CalendarPlus size={48} color={COLORS.primary} />
+              </View>
+              <Text style={styles.emptyStateTitle}>
+                No appointments scheduled
+              </Text>
+              <Text style={styles.emptyStateDescription}>
+                You don't have any appointments yet. Tap the button below to
+                schedule your first appointment.
+              </Text>
+              <TouchableOpacity
+                style={styles.scheduleButton}
+                onPress={handleOpenModalScreen}
+                activeOpacity={0.6}
+              >
+                <CalendarPlus size={20} color={COLORS.primary} />
+                <Text style={styles.scheduleButtonText}>
+                  Schedule Appointment
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
-        {/* Removed <Button title="Open Modal" onPress={handleOpenModalScreen} /> */}
       </ScrollView>
       <TouchableOpacity
         style={styles.fab}
@@ -323,6 +347,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.textSecondary,
     marginTop: 16,
+    width: '100%',
+    textAlign: 'center',
   },
   errorContainer: {
     flex: 1,
@@ -380,5 +406,59 @@ const styles = StyleSheet.create({
         elevation: 8,
       },
     }),
+  },
+  emptyStateSection: {
+    marginBottom: 24,
+  },
+  emptyStateCard: {
+    backgroundColor: COLORS.cardBackground,
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadow,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  emptyStateIconContainer: {
+    backgroundColor: COLORS.backgroundSecondary,
+    borderRadius: 32,
+    padding: 16,
+    marginBottom: 20,
+  },
+  emptyStateTitle: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 20,
+    color: COLORS.textPrimary,
+    marginBottom: 8,
+  },
+  emptyStateDescription: {
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 16,
+    color: COLORS.textSecondary,
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  scheduleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+  },
+  scheduleButtonText: {
+    fontFamily: 'Montserrat-Medium',
+    fontSize: 16,
+    color: COLORS.primary,
+    marginLeft: 8,
   },
 });

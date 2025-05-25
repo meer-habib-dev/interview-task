@@ -69,7 +69,6 @@ export const loginWithGoogle = async (): Promise<User | null> => {
 
     return userData;
   } catch (error) {
-    console.error('Google login error:', error);
     throw error;
   }
 };

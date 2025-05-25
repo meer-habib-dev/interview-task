@@ -1,3 +1,4 @@
+import { useTimezoneStore } from '@/store/timezoneStore';
 import { format, setHours, setMinutes } from 'date-fns';
 import { toZonedTime, formatInTimeZone } from 'date-fns-tz';
 
@@ -63,10 +64,12 @@ export const timeStringToDate = (
 /**
  * Get the current time in a specific timezone
  */
-export const getCurrentTimeInTimezone = (timezone: string): Date => {
-  const now = new Date('2025-05-23T05:00:00Z');
-  return toZonedTime(now, timezone);
-};
+// export const getCurrentTimeInTimezone = (timezone: string): Date => {
+//   const now = new Date('2025-05-27T02:00:00Z');
+
+//   console.log('now', toZonedTime(now, timezone).toString(), timezone);
+//   return toZonedTime(now, timezone);
+// };
 
 /**
  * Convert a date from one timezone to another
@@ -80,4 +83,18 @@ export const convertDateTimezone = (
   const dateInSourceTz = toZonedTime(date, fromTimezone);
   // Then convert to the target timezone
   return toZonedTime(dateInSourceTz, toTimezone);
+};
+
+export const getTimezone = (): string => {
+  const nyTimeZone = useTimezoneStore.getState().isNycTimezone
+    ? 'America/New_York'
+    : useTimezoneStore.getState().userTimezone;
+  return nyTimeZone;
+};
+
+export const getCurrentTimeInTimezone = (): Date => {
+  const nyTimeZone = getTimezone();
+  // const now = new Date('2025-05-27T02:00:00Z');
+  const now = new Date();
+  return toZonedTime(now, nyTimeZone);
 };

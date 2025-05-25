@@ -66,7 +66,6 @@ export default function LoginScreen() {
         router.replace('/(tabs)');
       }
     } catch (err) {
-      console.error('Google login error:', err);
       setError('Google login failed. Please try again.');
     } finally {
       setGoogleLoading(false);
@@ -216,6 +215,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderRadius: 8,
     height: 56,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 16,
@@ -224,6 +224,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Bold',
     fontSize: 16,
     color: '#ffffff',
+    width: '100%',
+    textAlign: 'center',
   },
   divider: {
     flexDirection: 'row',
@@ -259,5 +261,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold',
     fontSize: 16,
     color: COLORS.textPrimary,
+    flex: 1,
+    textAlign: 'center',
   },
 });

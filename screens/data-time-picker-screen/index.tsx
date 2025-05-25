@@ -18,6 +18,7 @@ import {
   formatDateForDisplay,
   getCurrentTimeInTimezone,
   formatDateForDateList,
+  getTimezone,
 } from '@/utils/dateTimeUtils';
 import DateList from '@/components/DateList';
 import { addDays } from 'date-fns';
@@ -100,8 +101,8 @@ export default function DateTimePickerScreen() {
   }, [selectedDate, storeHours, storeOverrides, isNycTimezone, userTimezone]);
 
   const dates = useMemo(() => {
-    const activeTimezone = isNycTimezone ? 'America/New_York' : userTimezone;
-    const baseDate = getCurrentTimeInTimezone(activeTimezone);
+    const activeTimezone = getTimezone();
+    const baseDate = getCurrentTimeInTimezone();
 
     return Array.from({ length: 30 }, (_, i) => {
       const date = addDays(baseDate, i);

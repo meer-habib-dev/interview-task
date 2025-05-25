@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import { StoreHours, StoreOverride } from '@/types/store';
 import { getNextOpeningTime } from './storeHoursUtils';
 import { useNotificationStore } from '@/store/notificationStore';
+import { getCurrentTimeInTimezone } from './dateTimeUtils';
 
 /**
  * Initialize notifications
@@ -90,15 +91,26 @@ export const scheduleOpeningNotification = async (
 
   // Schedule notification 1 hour before opening
   const notificationTime = new Date(nextOpeningTime);
-  notificationTime.setHours(notificationTime.getHours() - 1);
+  console.log(
+    'notificationTime',
+    notificationTime.toISOString(),
+    notificationTime.getHours(),
+    getCurrentTimeInTimezone().toISOString(),
+    getCurrentTimeInTimezone().getHours()
+  );
+  notificationTime.setHours(notificationTime.getHours());
+  // notificationTime.setHours(notificationTime.getHours() - 1);
 
   if (notificationTime <= new Date()) {
     return;
   }
 
   // Calculate time until notification in seconds
-  const seconds = Math.floor((notificationTime.getTime() - Date.now()) / 1000);
+  const seconds = Math.floor(
+    (notificationTime.getTime() - getCurrentTimeInTimezone().getTime()) / 1000
+  );
 
+  console.log('seconds', seconds);
   try {
     // Schedule the notification
     const notificationId = await Notifications.scheduleNotificationAsync({
@@ -113,7 +125,7 @@ export const scheduleOpeningNotification = async (
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-        seconds,
+        seconds: seconds <= 3600 && seconds > 0 ? 2 : 0,
       },
     });
 

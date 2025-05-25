@@ -1,7 +1,11 @@
 import { getDay, addMinutes, startOfDay } from 'date-fns';
 import { toZonedTime, fromZonedTime } from 'date-fns-tz';
 import { StoreHours, StoreOverride } from '@/types/store';
-import { timeStringToDate } from './dateTimeUtils';
+import {
+  getCurrentTimeInTimezone,
+  getTimezone,
+  timeStringToDate,
+} from './dateTimeUtils';
 import { useTimezoneStore } from '@/store/timezoneStore';
 
 /**
@@ -38,6 +42,8 @@ export const getIsStoreOpen = (
     (hours) => hours.day_of_week === dayOfWeek && hours.is_open
   );
 
+  console.log('todayHours', todayHours);
+
   // Check if within any of the opening slots
   return todayHours.some((hours) =>
     isWithinStoreHours(now, hours.start_time, hours.end_time)
@@ -52,10 +58,8 @@ const isWithinStoreHours = (
   startTime: string,
   endTime: string
 ): boolean => {
-  const nyTimeZone = 'America/New_York';
-
   // Convert current time to NY timezone
-  const dateInNY = toZonedTime(date, nyTimeZone);
+  const dateInNY = toZonedTime(date, getTimezone());
   const todayInNY = startOfDay(dateInNY);
 
   // Parse times in HH:MM format
@@ -74,6 +78,10 @@ const isWithinStoreHours = (
     closeTime.setDate(closeTime.getDate() + 1);
   }
 
+  console.log('openTime', openHour, openTime.toISOString());
+  console.log('closeTime', closeHour, closeTime.toISOString());
+  console.log('dateInNY', dateInNY.toISOString());
+
   // Check if current time is within opening hours
   return dateInNY >= openTime && dateInNY <= closeTime;
 };
@@ -85,13 +93,11 @@ export const getNextOpeningTime = (
   storeHours: StoreHours[],
   storeOverrides: StoreOverride[]
 ): Date | null => {
-  const now = new Date();
+  // const now = new Date();
+  const now = getCurrentTimeInTimezone();
   const currentDayOfWeek = getDay(now);
   const currentMonth = now.getMonth() + 1; // 0-based to 1-based
   const currentDay = now.getDate();
-
-  const isNycTimezone = useTimezoneStore.getState().isNycTimezone;
-  const userTimezone = useTimezoneStore.getState().userTimezone;
 
   // Check if there's an override for today
   const todayOverride = storeOverrides.find(
@@ -106,7 +112,7 @@ export const getNextOpeningTime = (
       now,
       openHour.toString(),
       openMinute.toString(),
-      isNycTimezone ? 'America/New_York' : userTimezone
+      getTimezone()
     );
 
     if (openingTime > now) {
@@ -140,7 +146,7 @@ export const getNextOpeningTime = (
           checkDate,
           openHour.toString(),
           openMinute.toString(),
-          'America/New_York'
+          getTimezone()
         );
 
         if (i === 0 && openingTime <= now) {
